@@ -1,15 +1,20 @@
-# fly.toml file generated for broken-wood-6698 on 2023-02-03T09:00:25+02:00
+# fly.toml file generated for blue-glitter-3516 on 2023-02-03T15:49:52+02:00
 
-app = "broken-wood-6698"
+app = "blue-glitter-3516"
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = []
+
+[deploy]
+  release_command = "npm run build"
 
 [env]
   PORT = "8080"
 
 [experimental]
   auto_rollback = true
+
+[processes]
+  app = "node app.js"
 
 [[services]]
   internal_port = 8080
@@ -20,6 +25,17 @@ processes = []
     hard_limit = 25
     soft_limit = 20
     type = "connections"
+
+  [[services.http_checks]]
+    grace_period = "5s"
+    interval = 10000
+    method = "get"
+    path = "/health"
+    protocol = "http"
+    restart_limit = 0
+    timeout = 2000
+    tls_skip_verify = false
+    [services.http_checks.headers]
 
   [[services.ports]]
     force_https = true
@@ -35,20 +51,3 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
-
-  [[services.http_checks]]
-    interval = 10000
-    grace_period = "5s"
-    method = "get"
-    path = "/health"
-    protocol = "http"
-    restart_limit = 0
-    timeout = 2000
-    tls_skip_verify = false
-    [services.http_checks.headers]
-
-  [deploy]
-    release_command = "npm run build"
-
-  [processes]
-    app = "node app.js"
