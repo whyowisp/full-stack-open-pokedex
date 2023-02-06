@@ -21,7 +21,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
   tag_release:
-    needs: [Deploy App]
+    needs: [deploy]
     name: Bump version and push tag
     runs on: ubuntu-latest
     steps:     
